@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Agent Browser — Feedback Fallback</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;max-width:820px;margin:24px auto;padding:0 16px;color:#111}
+    label{display:block;margin-top:12px;font-weight:600}
+    input,textarea,select{width:100%;padding:8px;margin-top:6px;border:1px solid #ccc;border-radius:6px}
+    button{margin-top:12px;padding:10px 14px;border-radius:6px}
+    .muted{color:#666;font-size:0.9em}
+  </style>
+</head>
+<body>
+  <h1>Agent Browser — Feedback Fallback</h1>
+  <p class="muted">Use this single-file feedback form when Google/Airtable forms are unavailable. Submitting will download a CSV row you can append into the canonical tracker file.</p>
+
+  <form id="fb">
+    <label>Tester name (optional)
+      <input name="tester" placeholder="First Last or handle" />
+    </label>
+
+    <label>Email (optional)
+      <input name="email" placeholder="tester@example.com" />
+    </label>
+
+    <label>Device / OS
+      <input name="device" placeholder="Pixel 6 / Android 13" />
+    </label>
+
+    <label>Feedback (short)
+      <textarea name="feedback" rows="4" placeholder="1-2 sentence summary of the issue or suggestion"></textarea>
+    </label>
+
+    <label>Severity
+      <select name="severity">
+        <option value="low">low</option>
+        <option value="medium">medium</option>
+        <option value="high">high</option>
+      </select>
+    </label>
+
+    <button type="button" id="download">Download CSV row</button>
+  </form>
+
+  <script>
+    function escapeCsv(v){
+      if(v == null) return '';
+      var s = String(v).replace(/"/g,'""');
+      if(s.indexOf(',')>=0 || s.indexOf('\n')>=0 || s.indexOf('"')>=0) return '"'+s+'"';
+      return s;
+    }
+
+    document.getElementById('download').addEventListener('click',function(){
+      var f = document.getElementById('fb');
+      var data = {
+        timestamp: new Date().toISOString(),
+        tester: f.elements['tester'].value,
+        email: f.elements['email'].value,
+        device: f.elements['device'].value,
+        severity: f.elements['severity'].value,
+        feedback: f.elements['feedback'].value
+      };
+      var header = ['timestamp','tester','email','device','severity','feedback'];
+      var row = header.map(function(k){return escapeCsv(data[k]);}).join(',') + '\n';
+      var blob = new Blob([row],{type:'text/csv;charset=utf-8;'});
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'agent-browser-feedback-row-' + (new Date().toISOString().replace(/[:.]/g,'-')) + '.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>

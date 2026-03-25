@@ -1,0 +1,2 @@
+timestamp,tester,email,device,severity,feedback
+2026-03-22T13:36:00Z,Sample Tester,tester@example.com,Pixel 6 / Android 13,medium,"Found that the quickstart link 404s on initial open. Steps to reproduce attached in notes."
