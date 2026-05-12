@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Agent Browser logo">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#g)"/>
+  <rect x="96" y="128" width="320" height="240" rx="28" fill="#ffffff" opacity="0.96"/>
+  <rect x="96" y="128" width="320" height="54" rx="28" fill="#dbeafe"/>
+  <circle cx="132" cy="155" r="9" fill="#2563eb"/>
+  <circle cx="160" cy="155" r="9" fill="#64748b"/>
+  <circle cx="188" cy="155" r="9" fill="#0f172a"/>
+  <path d="M168 288h106" stroke="#0f172a" stroke-width="28" stroke-linecap="round"/>
+  <path d="M274 288l-45-45" stroke="#2563eb" stroke-width="28" stroke-linecap="round"/>
+  <path d="M274 288l-45 45" stroke="#2563eb" stroke-width="28" stroke-linecap="round"/>
+  <circle cx="340" cy="288" r="34" fill="#2563eb"/>
+</svg>
