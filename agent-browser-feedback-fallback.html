@@ -3,46 +3,142 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Agent Browser — Feedback Fallback</title>
+  <title>Agent Browser — Tester Feedback</title>
   <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial;max-width:820px;margin:24px auto;padding:0 16px;color:#111}
+    :root{color-scheme:light}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;max-width:900px;margin:24px auto;padding:0 16px;color:#111;background:#fff;line-height:1.45}
+    h1,h2,h3{line-height:1.15}
+    .hero{padding:18px 20px;border:1px solid #dbe4ff;border-radius:14px;background:#f5f8ff;margin-bottom:18px}
+    .hero p{margin:10px 0}
+    .cta{display:inline-block;margin:8px 12px 0 0;padding:10px 14px;border-radius:8px;background:#2563eb;color:#fff;text-decoration:none;font-weight:700}
+    .cta.secondary{background:#0f172a}
+    .muted{color:#555;font-size:.96em}
+    .card{border:1px solid #e5e7eb;border-radius:12px;padding:16px 18px;margin:16px 0;background:#fff}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
     label{display:block;margin-top:12px;font-weight:600}
-    input,textarea,select{width:100%;padding:8px;margin-top:6px;border:1px solid #ccc;border-radius:6px}
-    button{margin-top:12px;padding:10px 14px;border-radius:6px}
-    .muted{color:#666;font-size:0.9em}
+    input,textarea,select{width:100%;padding:10px;margin-top:6px;border:1px solid #cbd5e1;border-radius:8px;font:inherit;box-sizing:border-box}
+    button{margin-top:14px;padding:12px 16px;border-radius:8px;border:0;background:#111827;color:#fff;font-weight:700;cursor:pointer}
+    ul{padding-left:20px}
+    code{background:#f3f4f6;padding:1px 5px;border-radius:4px}
+    .small{font-size:.92em}
   </style>
 </head>
 <body>
-  <h1>Agent Browser — Feedback Fallback</h1>
-  <p class="muted">Use this single-file feedback form when Google/Airtable forms are unavailable. Submitting will download a CSV row you can append into the canonical tracker file.</p>
+  <div class="hero">
+    <h1>Agent Browser — Early Tester Feedback</h1>
+    <p><strong>Current honest scope:</strong> Agent Browser is in early public-first testing for one narrow use case: <strong>mobile approval / oversight for browser-agent workflows</strong>.</p>
+    <p>The live public path right now is <strong>Android testing</strong>. If you try it and hit something confusing, brittle, or broken, use the feedback form below.</p>
+    <a class="cta" href="https://play.google.com/apps/testing/com.reguassist.agentbrowser">Open Android test</a>
+    <a class="cta secondary" href="#feedback-form">Jump to feedback form</a>
+    <p class="muted small">If the Play link asks you to sign in, that's expected — Google Play testing requires a signed-in Google account.</p>
+  </div>
 
-  <form id="fb">
-    <label>Tester name (optional)
-      <input name="tester" placeholder="First Last or handle" />
-    </label>
+  <div class="card">
+    <h2>What feedback is most useful</h2>
+    <div class="grid">
+      <div>
+        <h3>Setup friction</h3>
+        <p class="muted">Anything confusing about joining the Android test, installing, or getting to first use.</p>
+      </div>
+      <div>
+        <h3>Approval reliability</h3>
+        <p class="muted">Did the pending approval appear when expected, and did approve/deny behave correctly?</p>
+      </div>
+      <div>
+        <h3>Trust / clarity</h3>
+        <p class="muted">Did the approval step feel understandable and safe enough to use in a real workflow?</p>
+      </div>
+      <div>
+        <h3>Reproducible bugs</h3>
+        <p class="muted">Device, Android version, exact steps, and the first confusing or broken moment.</p>
+      </div>
+    </div>
+  </div>
 
-    <label>Email (optional)
-      <input name="email" placeholder="tester@example.com" />
-    </label>
+  <div class="card">
+    <h2>First workflow to try</h2>
+    <ol>
+      <li>Join the Android test build from Google Play.</li>
+      <li>Open the app on your Android device.</li>
+      <li>Use a safe workflow where a human approval step should appear.</li>
+      <li>Check whether the request appears clearly in the app.</li>
+      <li>Approve it if the request looks correct.</li>
+      <li>Report whether the browser workflow resumed as expected.</li>
+    </ol>
+  </div>
 
-    <label>Device / OS
-      <input name="device" placeholder="Pixel 6 / Android 13" />
-    </label>
+  <div class="card" id="feedback-form">
+    <h2>Feedback form</h2>
+    <p class="muted">Submitting this form downloads a CSV row you can send back or append into the canonical tracker.</p>
 
-    <label>Feedback (short)
-      <textarea name="feedback" rows="4" placeholder="1-2 sentence summary of the issue or suggestion"></textarea>
-    </label>
+    <form id="fb">
+      <label>Tester name (optional)
+        <input name="tester" placeholder="First name or handle" />
+      </label>
 
-    <label>Severity
-      <select name="severity">
-        <option value="low">low</option>
-        <option value="medium">medium</option>
-        <option value="high">high</option>
-      </select>
-    </label>
+      <label>Email (optional)
+        <input name="email" placeholder="tester@example.com" />
+      </label>
 
-    <button type="button" id="download">Download CSV row</button>
-  </form>
+      <label>Device / OS
+        <input name="device" placeholder="Pixel 8 / Android 14" />
+      </label>
+
+      <label>Workflow / scenario tested
+        <input name="scenario" placeholder="Approval prompt during login flow" />
+      </label>
+
+      <label>Did the approval request appear?
+        <select name="approval_visible">
+          <option value="yes">yes</option>
+          <option value="no">no</option>
+          <option value="not-sure">not sure</option>
+        </select>
+      </label>
+
+      <label>Did approving resume the workflow?
+        <select name="resume_worked">
+          <option value="yes">yes</option>
+          <option value="no">no</option>
+          <option value="not-tested">not tested</option>
+        </select>
+      </label>
+
+      <label>Severity
+        <select name="severity">
+          <option value="low">low</option>
+          <option value="medium">medium</option>
+          <option value="high">high</option>
+          <option value="blocker">blocker</option>
+        </select>
+      </label>
+
+      <label>What happened?
+        <textarea name="feedback" rows="4" placeholder="Short summary of the issue, confusion, or suggestion"></textarea>
+      </label>
+
+      <label>Steps to reproduce (optional)
+        <textarea name="steps" rows="4" placeholder="1. Open app... 2. Start workflow... 3. Approval never appears..."></textarea>
+      </label>
+
+      <button type="button" id="download">Download feedback CSV row</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>What to include if something failed</h2>
+    <ul>
+      <li>Android device + OS version</li>
+      <li>Whether the approval prompt appeared</li>
+      <li>Whether approve resumed the workflow</li>
+      <li>The first confusing or broken moment</li>
+      <li>Exact steps if you can reproduce it</li>
+    </ul>
+  </div>
+
+  <div class="card small muted">
+    Discovery backlinks: <a href="https://www.aitoolzdir.com" target="_blank" rel="noopener">AI Toolz Dir</a>
+  </div>
 
   <script>
     function escapeCsv(v){
@@ -59,12 +155,16 @@
         tester: f.elements['tester'].value,
         email: f.elements['email'].value,
         device: f.elements['device'].value,
+        scenario: f.elements['scenario'].value,
+        approval_visible: f.elements['approval_visible'].value,
+        resume_worked: f.elements['resume_worked'].value,
         severity: f.elements['severity'].value,
-        feedback: f.elements['feedback'].value
+        feedback: f.elements['feedback'].value,
+        steps: f.elements['steps'].value
       };
-      var header = ['timestamp','tester','email','device','severity','feedback'];
-      var row = header.map(function(k){return escapeCsv(data[k]);}).join(',') + '\n';
-      var blob = new Blob([row],{type:'text/csv;charset=utf-8;'});
+      var header = ['timestamp','tester','email','device','scenario','approval_visible','resume_worked','severity','feedback','steps'];
+      var row = header.map(function(k){ return escapeCsv(data[k]); }).join(',') + '\n';
+      var blob = new Blob([row], {type:'text/csv;charset=utf-8;'});
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;
