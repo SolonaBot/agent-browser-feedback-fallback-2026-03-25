@@ -88,6 +88,25 @@
         <input name="scenario" placeholder="Approval prompt during login flow" />
       </label>
 
+      <label>How did you find Agent Browser?
+        <select name="discovery_source" id="discovery_source">
+          <option value="unknown">not sure / direct</option>
+          <option value="playbooks">Playbooks</option>
+          <option value="clawskills">ClawSkills</option>
+          <option value="voltagent-awesome-openclaw-skills">VoltAgent awesome-openclaw-skills</option>
+          <option value="lobehub-marketplace">LobeHub marketplace</option>
+          <option value="ai-agents-directory">AI Agents Directory</option>
+          <option value="aitoolboard">AIToolboard</option>
+          <option value="reddit">Reddit</option>
+          <option value="email-or-referral">email / referral</option>
+          <option value="other">other</option>
+        </select>
+      </label>
+
+      <label>Source detail (optional)
+        <input name="source_detail" id="source_detail" placeholder="Listing URL, community, referrer, or person who sent it" />
+      </label>
+
       <label>Did the approval request appear?
         <select name="approval_visible">
           <option value="yes">yes</option>
@@ -126,6 +145,19 @@
   </div>
 
   <div class="card">
+    <h2>Source-tagged tester links</h2>
+    <p class="muted">Use these when sharing Agent Browser so downloaded feedback rows preserve the route that produced the tester. This is intentionally lightweight: no trackers, cookies, or external analytics.</p>
+    <ul>
+      <li><a href="?source=playbooks#feedback-form">Playbooks tester link</a></li>
+      <li><a href="?source=clawskills#feedback-form">ClawSkills tester link</a></li>
+      <li><a href="?source=voltagent-awesome-openclaw-skills#feedback-form">VoltAgent awesome-list tester link</a></li>
+      <li><a href="?source=lobehub-marketplace#feedback-form">LobeHub marketplace tester link</a></li>
+      <li><a href="?source=ai-agents-directory#feedback-form">AI Agents Directory tester link</a></li>
+      <li><a href="?source=direct#feedback-form">Direct outreach tester link</a></li>
+    </ul>
+  </div>
+
+  <div class="card">
     <h2>What to include if something failed</h2>
     <ul>
       <li>Android device + OS version</li>
@@ -153,6 +185,17 @@
       return s;
     }
 
+    (function prefillSource(){
+      var params = new URLSearchParams(window.location.search);
+      var source = params.get('source') || params.get('utm_source') || '';
+      if(!source) return;
+      var select = document.getElementById('discovery_source');
+      var detail = document.getElementById('source_detail');
+      var values = Array.prototype.map.call(select.options, function(o){ return o.value; });
+      select.value = values.indexOf(source) >= 0 ? source : 'other';
+      detail.value = source;
+    })();
+
     document.getElementById('download').addEventListener('click',function(){
       var f = document.getElementById('fb');
       var data = {
@@ -161,13 +204,17 @@
         email: f.elements['email'].value,
         device: f.elements['device'].value,
         scenario: f.elements['scenario'].value,
+        discovery_source: f.elements['discovery_source'].value,
+        source_detail: f.elements['source_detail'].value,
+        page_source_param: new URLSearchParams(window.location.search).get('source') || new URLSearchParams(window.location.search).get('utm_source') || '',
+        page_url: window.location.href,
         approval_visible: f.elements['approval_visible'].value,
         resume_worked: f.elements['resume_worked'].value,
         severity: f.elements['severity'].value,
         feedback: f.elements['feedback'].value,
         steps: f.elements['steps'].value
       };
-      var header = ['timestamp','tester','email','device','scenario','approval_visible','resume_worked','severity','feedback','steps'];
+      var header = ['timestamp','tester','email','device','scenario','discovery_source','source_detail','page_source_param','page_url','approval_visible','resume_worked','severity','feedback','steps'];
       var row = header.map(function(k){ return escapeCsv(data[k]); }).join(',') + '\n';
       var blob = new Blob([row], {type:'text/csv;charset=utf-8;'});
       var url = URL.createObjectURL(blob);
